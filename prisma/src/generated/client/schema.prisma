@@ -1,0 +1,45 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  cliente_id Int @id @default(autoincrement())
+  nome       String
+  email      String?
+  telefone   String?
+  servicos   Servico[]
+}
+
+model Servico {
+  servico_id    Int  @id  @default(autoincrement())
+  cliente_id    Int
+  data_servico  DateTime
+  descricao     String
+  valor         Float
+  cliente       Cliente @relation(fields: [cliente_id], references: [cliente_id])
+  pecas         Peca[]  @relation("ServicosPecas")
+}
+
+model Peca {
+  peca_id         Int @id  @default(autoincrement())
+  nome            String
+  quantidade      Int
+  preco_unitario  Float
+  servicos        Servico[] @relation("ServicosPecas")
+}
+
+model TransacaoFinanceira {
+  transacao_id   Int  @id  @default(autoincrement())
+  tipo           String
+  valor          Float
+  data_transacao DateTime
+  descricao      String?
+}
