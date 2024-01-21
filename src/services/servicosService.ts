@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { ServicosCreateInput } from '../interfaces/servicos';
 
 const prisma = new PrismaClient();
 
